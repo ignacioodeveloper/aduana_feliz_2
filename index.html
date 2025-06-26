@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MVP V3 - Sistema de Gestión Fronteriza</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light">
+
+    <!-- ==== PANTALLA DE LOGIN ==== -->
+    <div id="login-section" class="container">
+        <!-- El contenido es el mismo de V2 -->
+        <div class="row vh-100 justify-content-center align-items-center"><div class="col-md-6 col-lg-4"><div class="card shadow-sm"><div class="card-body p-4"><div class="text-center mb-4"><i class="bi bi-shield-lock-fill text-primary" style="font-size: 3rem;"></i><h3 class="mt-2">Gestión Fronteriza</h3><p class="text-muted">Inicia sesión para continuar</p></div><div id="login-error" class="alert alert-danger d-none" role="alert">Usuario o contraseña incorrectos.</div><form id="login-form"><div class="mb-3"><label for="usuario" class="form-label">Usuario (RUT)</label><input type="text" class="form-control" id="usuario" placeholder="Ej: 8.888.888-8" required></div><div class="mb-3"><label for="password" class="form-label">Contraseña</label><input type="password" class="form-control" id="password" required></div><div class="d-grid"><button type="submit" class="btn btn-primary">Ingresar</button></div></form></div></div></div></div>
+    </div>
+
+    <!-- ==== APLICACIÓN PRINCIPAL ==== -->
+    <div id="app-section" class="d-none">
+        <header class="navbar navbar-dark bg-dark sticky-top shadow">
+            <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Sist. Fronterizo</a>
+            <div class="navbar-nav ms-auto">
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white px-3" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle me-1"></i> <span id="welcome-user"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" href="#" data-target="mi-perfil"><i class="bi bi-gear-fill me-2"></i>Mi Perfil</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" id="logout-btn"><i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <div class="container-fluid">
+            <div class="row">
+                <!-- BARRA LATERAL (se genera dinámicamente) -->
+                <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-white sidebar collapse">
+                    <div class="position-sticky pt-3" id="sidebar-menu"></div>
+                </nav>
+
+                <!-- CONTENIDO PRINCIPAL -->
+                <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                    
+                    <!-- PANTALLA: Panel Principal (Dashboard) -->
+                    <div id="dashboard" class="content-section active pt-3">
+                        <h2 id="dashboard-title">Panel Principal</h2>
+                        <div class="row" id="kpi-cards-container">
+                            <!-- Los KPIs se insertarán aquí -->
+                        </div>
+                        <div class="alert alert-success mt-4">
+                            <h4 class="alert-heading">¡Aduanas de Chile les desea un Feliz 2025!</h4>
+                            <p>Continuamos trabajando para modernizar y agilizar nuestros servicios fronterizos.</p>
+                        </div>
+                    </div>
+                    <!-- PANTALLA: Salida y Entrada de Menores (R.3) -->
+                    <div id="salida-menores" class="content-section pt-3">
+                        <h2>Validación de Documentos para Salida y Entrada de Menores</h2>
+                        <p>Genere y valide automáticamente los documentos necesarios.</p>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Buscar por RUT del menor...">
+                            <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search"></i> Buscar</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>RUT Menor</th><th>Nombre Completo</th><th>Viaja con</th><th>Doc. Requeridos</th><th>Estado</th><th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>22.345.678-9</td><td>Javier Ignacio Soto Pérez</td><td>Ambos Padres</td><td>C.I. / Pasaporte</td><td><span class="badge bg-success">Verificado</span></td><td><button class="btn btn-sm btn-info">Ver Detalles</button></td></tr>
+                                    <tr><td>23.111.222-K</td><td>Valentina Andrea Rojas López</td><td>Solo Madre</td><td>C.I., Cert. Nacimiento, Permiso Notarial Padre</td><td><span class="badge bg-warning text-dark">Pendiente Notarial</span></td><td><button class="btn btn-sm btn-primary">Validar</button></td></tr>
+                                    <tr><td>21.987.654-3</td><td>Martín Alonso González Tapia</td><td>Tutor Legal</td><td>C.I., Cert. Nacimiento, Sentencia Judicial</td><td><span class="badge bg-danger">Documento Rechazado</span></td><td><button class="btn btn-sm btn-info">Ver Detalles</button></td></tr>
+                                    <tr><td>22.555.444-1</td><td>Isidora Paz Castro Muñoz</td><td>Ambos Padres</td><td>C.I. / Pasaporte</td><td><span class="badge bg-success">Verificado</span></td><td><button class="btn btn-sm btn-info">Ver Detalles</button></td></tr>
+                                    <tr><td>23.001.002-5</td><td>Benjamín Andrés Silva Flores</td><td>Solo Padre</td><td>C.I., Cert. Nacimiento, Permiso Notarial Madre</td><td><span class="badge bg-warning text-dark">Pendiente Notarial</span></td><td><button class="btn btn-sm btn-primary">Validar</button></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- PANTALLA: Control Automatizado SAG/PDI (R.5) -->
+                    <div id="control-sag-pdi" class="content-section pt-3">
+                        <!-- El contenido es el mismo de V1, no requiere cambios -->
+                        <h2>Control Automatizado de SAG y PDI</h2>
+                        <p>Registro, control y validación digital de procesos.</p>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Buscar por RUT o Pasaporte del pasajero..." value="15.888.777-K">
+                            <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search"></i> Buscar</button>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">Resultados para: <strong>Sofía Castro (15.888.777-K)</strong></div>
+                            <div class="card-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">Validación PDI (Control Migratorio)<span class="badge bg-success rounded-pill"><i class="bi bi-check-circle-fill me-1"></i> Aprobado</span></li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">Control Fito/Zoosanitario (SAG)<span class="badge bg-success rounded-pill"><i class="bi bi-check-circle-fill me-1"></i> Aprobado</span></li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">Declaración de Aduanas<span class="badge bg-warning text-dark rounded-pill"><i class="bi bi-exclamation-triangle-fill me-1"></i> Requiere Inspección</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- PANTALLA: Reportes de Flujo (R.6) -->
+                    <div id="reportes-flujo" class="content-section pt-3">
+                        <h2>Reportes de Ingresos y Egresos</h2>
+                        <p>Visualización de datos estratégicos sobre el flujo en pasos fronterizos.</p>
+                        <div class="row">
+                            <div class="col-lg-6 mb-4">
+                                <div class="card shadow-sm"><div class="card-header">Flujo de Personas (Últimos 7 días)</div><div class="card-body"><canvas id="flujoPersonasChart"></canvas></div></div>
+                            </div>
+                            <div class="col-lg-6 mb-4">
+                                <div class="card shadow-sm"><div class="card-header">Flujo de Vehículos por Tipo (Hoy)</div><div class="card-body"><canvas id="flujoVehiculosChart"></canvas></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PANTALLA: Gestión de Usuarios (R.2) -->
+                    <div id="gestion-usuarios" class="content-section pt-3">
+                        <h2>Gestión de Cuentas de Usuario</h2>
+                        <p>Administración de usuarios del sistema y sus perfiles.</p>
+                        <table class="table table-hover table-bordered">
+                            <thead class="table-light"><tr><th>Nombre Completo</th><th>RUT</th><th>Rol</th><th>Estado</th><th>Acciones</th></tr></thead>
+                            <tbody>
+                                <tr><td>Carlos Gerente</td><td>8.888.888-8</td><td>Cliente Gerente</td><td><span class="badge bg-success">Activo</span></td><td><button class="btn btn-sm btn-outline-primary">Editar</button></td></tr>
+                                <tr><td>Ana Operadora</td><td>9.999.999-9</td><td>Usuario / Jefe Área</td><td><span class="badge bg-success">Activo</span></td><td><button class="btn btn-sm btn-outline-primary">Editar</button></td></tr>
+                                <tr><td>Pedro Fiscalizador</td><td>12.345.678-0</td><td>Usuario / Jefe Área</td><td><span class="badge bg-success">Activo</span></td><td><button class="btn btn-sm btn-outline-primary">Editar</button></td></tr>
+                                <tr><td>Laura Administrativa</td><td>11.222.333-4</td><td>Administrador</td><td><span class="badge bg-danger">Inactivo</span></td><td><button class="btn btn-sm btn-outline-primary">Editar</button></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- PANTALLA: Generación de Formularios Aduaneros (R.10) -->
+                    <div id="generacion-formularios" class="content-section pt-3">
+                        <h2>Generación Automática de Formularios Aduaneros</h2>
+                        <p>Complete los datos para generar un formulario de Salida y Admisión Temporal de Vehículos (AST).</p>
+                        <div class="card"><div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 mb-3"><label class="form-label">Patente Vehículo</label><input type="text" class="form-control" placeholder="HG-KL-55"></div>
+                                <div class="col-md-8 mb-3"><label class="form-label">Nombre Conductor</label><input type="text" class="form-control" value="Juan Alberto Ríos Morales" readonly></div>
+                                <div class="col-md-4 mb-3"><label class="form-label">País de Origen</label><input type="text" class="form-control" value="Chile" readonly></div>
+                                <div class="col-md-4 mb-3"><label class="form-label">Destino</label><input type="text" class="form-control" value="Argentina"></div>
+                                <div class="col-md-4 mb-3"><label class="form-label">Fecha de Salida</label><input type="date" class="form-control" value="2024-12-20"></div>
+                            </div>
+                            <button class="btn btn-success"><i class="bi bi-file-earmark-pdf-fill me-2"></i>Generar e Imprimir Formulario</button>
+                        </div></div>
+                    </div>
+
+                    <!-- PANTALLA: Mi Perfil (R.11) -->
+                    <div id="mi-perfil" class="content-section pt-3">
+                        <h2>Mi Perfil y Seguridad</h2>
+                        <p>Gestione su información personal y la seguridad de su cuenta.</p>
+                        <div class="card" style="max-width: 600px;"><div class="card-body">
+                            <h5 class="card-title">Cambiar Contraseña</h5>
+                            <div class="mb-3"><label class="form-label">Contraseña Actual</label><input type="password" class="form-control"></div>
+                            <div class="mb-3"><label class="form-label">Nueva Contraseña</label><input type="password" class="form-control"></div>
+                            <div class="mb-3"><label class="form-label">Confirmar Nueva Contraseña</label><input type="password" class="form-control"></div>
+                            <button class="btn btn-primary">Guardar Cambios</button>
+                        </div></div>
+                    </div>
+                    
+                    <!-- (El resto de las pantallas de V2 se mantienen sin cambios en su HTML, solo se añaden más datos en las tablas) -->
+                    <div id="salida-menores" class="content-section pt-3"><!-- Mismo HTML de V2 --></div>
+                    <div id="control-sag-pdi" class="content-section pt-3"><!-- Mismo HTML de V2 --></div>
+                    <div id="consulta-tramite" class="content-section pt-3"><!-- Mismo HTML de V2 --></div>
+                    <div id="validacion-mascotas" class="content-section pt-3"><!-- Mismo HTML de V2 --></div>
+                    <div id="declaracion-alimentos" class="content-section pt-3"><!-- Mismo HTML de V2 --></div>
+
+                </main>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
